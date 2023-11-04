@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- مجتبى سالم تومان شعبة B2 -->
+    <!-------------------------------->
+    <!-- utf-8 حسب معرفتي طريقة تعامل مع لغة -->
+    <meta charset="UTF-8">
+    <!--  -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- الفيوبورت اي اظهار الصفحة بمعادلة العرض لعرض النافذة بتحجم مضروب في 1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- اسم الموقع -->
+    <title>College Project</title>
+    <!-- تضمين المكتبة في قسم رأس الصفحة -->
+    <script src="./scripts/three.js"></script>
+    <!-- تضمين مكتبة اخرى اختيارية -->
+    <script src="./scripts/three.module.js"></script>
+    <!-- تضمين مستورد العناصر ثلاثية الابعاد ذات امتداد gltf -->
+    <script src="./scripts/GLTFLoader.js"></script>
+    <!-- تضمين التحكم المربوط بعنصر معيّن -->
+    <script src="./scripts/OrbitControls.js"></script>
+    <!-- تضمين تحكّمات الطيران (احتياري) -->
+    <script src="./scripts/FlyControls.js"></script>
+    <!-- تمضين مستورد آخر لأمتداد برامج أخرى معروف ب fbx (اختياري) -->
+    <script src="./scripts/FBXLoader.js"></script>
+    <!-- تضمين صفحة الستايل -->
+    <link rel="stylesheet"  href="./Style/style.css">
+    <!-- ايقونة الموقع بامتداد png شفّاف -->
+    <link rel="shortcut icon" href="./Icon/icon.png" type="image/png">
+    <!-- انتهى رأس الصفحة -->
+</head>
+
+<body style="margin: 0;" >
+    <video loop autoplay="autoplay" style="display: none;" src="./Audio/Melancholia - William Basinski.mp4"></video>
+    <form action="#div">
+
+        <div style="margin:0; height:100vh;position: relative; top:0%;"id="div0"  >
+
+            <style>
+                /* استيراد خط من كوكل فونتس -Cairo للاوزان 400,700 */
+                @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Lalezar&display=swap');
+                @import url('https://fonts.googleapis.com/css2?family=Rakkas&display=swap');
+                
+                </style>
+             <div id="divz" style="display:block; position: absolute; height: 100vh; z-index: 0;">
+                <script>
+                    // خلق محرّك الاظهار ويب جي أل وتفعيل قناة الفا الشفّافة
+                    let renderer2 = new THREE.WebGLRenderer({alpha:true});
+       
+       // ربط نافذة الاظهار بالعنصر صاحب الآيدي المكتوب
+       document.getElementById("divz").appendChild(renderer2.domElement);
+       
+       // تحجيم نافذة الاظهار
+       renderer2.setSize(window.innerWidth, window.innerHeight);
+       
+       // خلق مشهد
+       let scene2= new THREE.Scene();
+       
+       // تعيين خلفية بقيمة الهيكس للمشهد (لن تظهر لأننا فعّلنا طبقة الشفافية الفا)
+       // scene.background=new THREE.Color(0x8888888);
+       
+       // خلق كاميرا ذو بعد بؤري 40 درجة وتحجيمها بالنسبة لأُطر النافذة
+       let camera2 = new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,0.01,40000);
+       
+       // اضافة الكاميرا للمشهد
+       scene2.add(camera2);
+       
+       // خلق ضوء شامل الاضاءة أي يضيئ اكثر عنصر ظلاماً بنفس قيمة باقي العناصر بلون ابيض
+       let light2=new THREE.AmbientLight(0xffffff , 1);
+       
+       // اضافة الضوء الى المشهد
+       scene2.add(light2);
+       
+       // وضع مكان الكاميرا على نقطة 1 في الاحداثي س
+       camera2.position.set(0,0.5,1);
+       
+       // خلق ضوء اتّجاهي بقيمة 10 يُستخدم عادة للضلال وتسوية العنصر المُضاء
+       dlight2=new THREE.DirectionalLight(0xfffddd,10);
+       
+       // تمكين الضوء الاتجاهي من ان يُنتج انكسارات ظلّية
+       dlight2.castShadow = true;
+       
+       // مكان الضوء قيمة واحدة الى الاعلى على محور ص
+       dlight2.position.set(0,1,0);
+       
+       // اضافة الضوء الاتجاهي للمشهد
+       scene2.add(dlight2);
+       
+       // خلق دالة الاستدعاء
+       let loader2=new THREE.GLTFLoader();
+       
+       // تنفيذ دالة الاستدعاء التي تستدعي ملف بصيغة معيّنة ثلاثي الابعاد
+       loader2.load("./3D Objects/boy/scene.gltf", (gltf)=>
+       {
+       
+       
+       // ربط العنصر المستورد الى المشهد
+       let root2=gltf.scene;
+       
+       //تعريف ابن جديد باسم object
+       object2=gltf.scene;
+       
+       // اضافة العنصر المستورد الى المشهد
+       scene2.add(root2);
+       
+       });
+       // دالة تحديث لَحظي للمشهد
+       function anim()
+       {
+           // طلب اطار لحظي
+           requestAnimationFrame(anim);
+          
+           // تدوير العنصر حول محور س بدرجة معيّنة
+           object2.rotation.y+=0.00018;
+
+       
+           // تحجيم الابعاد الثلاثة الى خمس مراتب اقل من اصلها
+           object2.scale.x=0.2;
+           object2.scale.y=0.2;
+           object2.scale.z=0.2;
+       
+           // أمر اضهار المشهد المبنيّ في النافذة
+           renderer2.render(scene2,camera2);
+       
+       }
+       // استدعاء دالة التحديث
+       anim();
+       
+       // انتهى
+       
+                           </script>
+               </div>
+                <div class="div" style = "margin:0; height:100vh; display:flex; flex-direction:column; text-align: center; justify-content:center; z-index: 5; position: absolute; left: 25%;">
+                    
+                    <h2 style="  color: whitesmoke; font-family: 'Cairo', sans-serif; font-size: 3em;font-weight: 700; ">
+
+                        <!-- H2 -->
+                        معرض تفاعُلي
+                        
+                        <!-- زرّ -->
+                        <button id="button" type="submit" style=" font-family: 'Rakkas', cursive; font-weight: 700; border-radius: 1em; font-size: 1em; ">استكشف</button>
+                        الخاص ب مجتبى
+                        <!-- H2 -->
+                        <!-- مشروع جامعة -->
+            
+                    </h2>
+                   
+                    
+                   
+                           
+    </div>
+               
+    </div>
+        
+    </form>
+    
+    <div id="div" style="height: 100vh;">
+        
+        <form action="#div3">
+            
+        <button id = "more" type="submit" style="display: flex;align-self: center; font-family: 'Cairo', sans-serif; font-weight: 700; border-radius: 1em; ">المزيد</button>
+
+        </form>
+
+        <script >
+                     let renderer = new THREE.WebGLRenderer({alpha:true});
+document.getElementById("div").appendChild(renderer.domElement);
+renderer.setSize(window.innerWidth, window.innerHeight);
+let scene= new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,0.01,40000);
+scene.add(camera);
+let light=new THREE.AmbientLight(0xffffff , 1);
+scene.add(light);
+camera.position.set(0,2,20);
+dlight=new THREE.DirectionalLight(0xffffff,20);
+dlight.castShadow = true;
+dlight.position.set(0,20,30);
+scene.add(dlight);
+let loader=new THREE.GLTFLoader();
+loader.load("./3D Objects/concerto/scene.gltf", (gltf)=>
+{
+let root=gltf.scene;
+object=gltf.scene;
+scene.add(root);
+
+});
+function animation()
+{
+    requestAnimationFrame(animation);
+    object.rotation.y+=0.002;
+    object.scale.x=1;
+    object.scale.y=1;
+    object.scale.z=1;
+    renderer.render(scene,camera);
+
+}
+animation();
+                    </script>
+
+               
+    </div>
+
+    <div style="display: flex; justify-content: center; text-align: center; margin:0; height:100vh;" id="div3">
+        <script>
+                    let renderer3 = new THREE.WebGLRenderer({alpha:false});
+document.getElementById("div3").appendChild(renderer3.domElement);
+renderer3.setSize(window.innerWidth, window.innerHeight);
+let scene3= new THREE.Scene();
+let camera3 = new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,0.01,40000);
+scene3.add(camera3);
+let light3=new THREE.AmbientLight(0xffffff , 1);
+scene3.add(light3);
+camera3.position.set(20,100,100);
+dlight3=new THREE.DirectionalLight(0xfffddd,10);
+dlight3.castShadow = true;
+dlight3.position.set(0,1,0);
+scene3.add(dlight3);
+let loader3=new THREE.GLTFLoader();
+loader3.load("./3D Objects/need_some_space/scene.gltf", (gltf)=>
+{
+let root3=gltf.scene;
+object3=gltf.scene;
+scene3.add(root3);
+
+});
+function anim2()
+{
+   requestAnimationFrame(anim2);
+     object3.position.z+=0.1;
+   renderer3.render(scene3,camera3);
+
+}
+anim2();
+                   </script>
+        <style>
+
+            @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+            </style>
+
+        <h2 style="font-family: 'Cairo', sans-serif; font-weight: 700; position: absolute; mix-blend-mode:difference; color: white;" >ايضاحات
+
+<p style="font-size:0.7em; font-family: 'Cairo', sans-serif; font-weight: 400;">
+
+<span style="color:rgb(255, 255, 255)">استخدام العناصر ثلاثية الابعاد في الويب</span>
+<br>
+<span style="color: white;">الموقع يتناسب مع كل انواع واشكال الاجهزة والشاشات وقياساتها</span>
+<br>
+<span style="color: white;">تم تطوير بالاستعانة بمكتبة<span style="font-weight: 700;">  جافا سكربت</span> ملحقة مع الملف هذا </span>
+<br>
+<span>بامكانك تعديل الكود كما تشاء و استيراد عناصر اخرى قابلة للعرض على المتصفح</span>
+<br>
+<span style="color: rgb(252, 30, 30); font-weight: 700;">حدّث الصفحة او انتظر قليلاً ان لم يكن هنالك عرض كامل </span>
+<br>
+<br>
+<span style="font-weight: 700; color: gray;"> by </span>
+<br>
+<span style="font-weight: 700; color: gray;">مجتبى سالم تومان</span>
+<br>
+<span style="font-weight: 700; color: white;">B2</span>
+</p>
+
+        </h2>
+
+    </div>
+
+    <div style="display: flex; justify-content: center; margin: 0; height: 100vh;" id="div4">
+
+<h2 style=" text-align: center; justify-content: center; font-size:3.5em; position: absolute; color: white; mix-blend-mode: difference; font-family: Cairo , sans-serif; display: flex;">! شُكراً 
+<br>
+نتمنى انك قد
+<br>
+استمتعت
+
+</h2>
+        <script>
+            let renderer4 = new THREE.WebGLRenderer({alpha:false});
+document.getElementById("div4").appendChild(renderer4.domElement);
+renderer4.setSize(window.innerWidth, window.innerHeight);
+let scene4= new THREE.Scene();
+let camera4 = new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,0.01,40000);
+scene4.add(camera4);
+let light4=new THREE.AmbientLight(0xffffff , 1);
+scene4.add(light4);
+camera4.position.set(0,150,500);
+dlight4=new THREE.DirectionalLight(0xfffddd,10);
+dlight4.castShadow = true;
+dlight4.position.set(0,1,0);
+scene4.add(dlight3);
+let loader4=new THREE.GLTFLoader();
+loader4.load("./3D Objects/steven_universe_-_stronger_than_you/scene.gltf", (gltf)=>
+{
+let root4=gltf.scene;
+object4=gltf.scene;
+scene4.add(root4);
+
+});
+function anim3()
+{
+   requestAnimationFrame(anim3);
+     object4.rotation.y+=0.001;
+   renderer4.render(scene4,camera4);
+
+}
+anim3();
+                   </script>
+    
+    
+    </div>
+
+</body>
+
+</html>
+<!-- You MUST be on live server to fully expierence the web page
+Live server can be internal like 127.0.0.1:port 
+You can do this by either deploying it in Apache
+Or with the Visual Studio Code extension that is called Live Server
+Or maybe if you have fast internet connection you can see it here fully working url
+http://mogtaba.netlify.app
+---------------------------
+All the 3d models credits go to their creators
+The first page model is by: raghavseries572 https://sketchfab.com/raghavseries572 
+The second page model is by: Gregory Khodyrev (https://sketchfab.com/gmaaailgrisha)
+Both are licensed under Creative Commons License and freely used for non commercial purposes with attribution 
+---------------
+This website intention was to be a single student project 
+لمادة تقنيات البرمجة - المرحلة الثانية - لجامعة بغداد
+ووصف كل خط برمجي متوفر في الاندكس بشكل مفصّل -->
